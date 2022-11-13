@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- -----------------------------------------icon -------------------------------------------->
+    <link rel="icon" href="logo.png" type="image/jpg" radius>
+
+    <title>Gm-Quizzer</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        #spinner {
+            position: fixed;
+            top: 40%;
+            left: 45%;
+            z-index: 5;
+
+        }
+        .button-box1{
+    width:110px;
+    margin:35px auto;
+    position:relative;
+    box-shadow: 0 0 25px 9px #ff3e241f;
+    border-radius:30px;
+}
+
+#btn1{
+    
+    position:absolute;
+
+    background: rgb(51, 181, 233);
+   
+    /* background: linear-gradient(to right,#ff105f,#ffad06); */
+    border-radius:30px;
+    transition: .5s;
+}
+    </style>
+
+</head>
+
+<body>
+    <div class="hero" id="signing">
+        <div class="form-box">
+            
+                
+                <h3  class="submit-btn1" style="cursor: default; margin-left: 33%; width: 15%;">Login</h3>
+                <!-- <button type="button" class="toggle-btn" onclick="Register()">Register</button> -->
+            
+            <!-- <div class="social-icons">
+                <img src="WhatsApp Image 2021-04-24 at 6.21.05 PM.jpeg">
+                <img src="WhatsApp Image 2021-04-24 at 6.22.07 PM.jpeg">
+            </div> -->
+            <!-- <form id="Login" class="input-group">
+
+                <input type="email" class="input-field" id="login-email" placeholder="Email Id" required>
+                <br> <br>
+                <input type="password" class="input-field" id="login-password" placeholder="Enter Password" required>
+                An element to toggle between password visibility -->
+            <!-- <span style="display: flex;"> <input type="checkbox" onclick="myFunction()"> Show Password </span>
+                <input type="checkbox" class="check-box"><span>Remember Password</span> 
+                <button type="submit" class="submit-btn">Login</button>
+                <div id="spinner" style="display:none;">
+                    <img id="img-spinner" src="Settings.gif" alt="Loading" />
+                </div>
+            </form>  -->
+            <form id="Login" class="signup-group">
+
+                <input type="text" class="input-field" id="signup-username" placeholder="Username" required>
+
+                <input type="text" class="input-field" id="signup-email" value="none" style="display: none;" required>
+                <input type="text" class="input-field" id="signup-college" placeholder="College name" required>
+
+                <!-- An element to toggle between password visibility -->
+
+                <!-- <input type="checkbox" class="check-box"><span>I agree to the terms and conditions</span> -->
+                <!-- <button id="u1" onclick="checkuser()">User</button> -->
+                <button type="submit" class="submit-btn" onclick="Login()">Register</button>
+                <div id="spinner" style="display:none;">
+                    <img id="img-spinner" src="Settings.gif" alt="Loading" />
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+    <script>
+        // var x = document.getElementById("Login");
+        // var y = document.getElementById("Register");
+        // var z = document.getElementById("btn");
+
+        // function Register() {
+        //     x.style.left = "-400px";
+        //     y.style.left = "50px";
+        //     z.style.left = "110px";
+        // }
+        // function Login() {
+
+        //     if ((signup - username != '') && (signup - email != '')(signup - password != '')) {
+        //         x.style.left = "50px";
+        //         y.style.left = "450px";
+        //         z.style.left = "0px";
+        //     }
+
+
+        // }
+
+        // function ToggleLogin() {
+
+
+        //     x.style.left = "50px";
+        //     y.style.left = "450px";
+        //     z.style.left = "0px";
+
+
+
+        // }
+
+
+        // function myFunction() {
+        //     var k = document.getElementById("login-password");
+        //     if (k.type === "password") {
+        //         k.type = "text";
+        //     } else {
+        //         k.type = "password";
+
+        //     }
+        // }
+
+        // function myFunction2() {
+        //     var l = document.getElementById("signup-password");
+        //     var c = document.getElementById("confirm-password");
+        //     if (l.type === "password") {
+        //         l.type = "text";
+        //     } else {
+        //         l.type = "password";
+
+        //     }
+        //     if (c.type === "password") {
+        //         c.type = "text";
+        //     }
+        //     else {
+        //         c.type = "password";
+
+        //     }
+        // }
+
+        function checkuser() {
+            firebase.auth().onAuthStateChanged(function (user) {
+                alert("PHONE: " + user.phoneNumber + " uid: " + user.uid);
+
+
+            });
+        }
+    </script>
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-firestore.js"></script>
+    <script>
+        var firebaseConfig = {
+           "Your App config here"
+
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+
+
+
+    </script>
+
+
+
+
+    <script>
+
+        const signupform = document.querySelector('#Login');
+        signupform.addEventListener('submit', (e) => {
+            // $('#spinner').show();
+            e.preventDefault();
+
+
+            const uname = signupform['signup-username'].value;
+            const email = signupform['signup-email'].value;
+            const college = signupform['signup-college'].value;
+
+
+            //signup----------------
+
+
+            $('#spinner').show();
+            //auth.createUserWithEmailAndPassword(email, password).then(cred => {
+
+            firebase.auth().onAuthStateChanged(function (user) {
+                firebase.firestore().collection('users').doc(user.uid).set({
+                    Username: uname,
+                    Email: email,
+                    Phone: user.phoneNumber,
+                    College: college
+
+
+                }).then(() => {
+                    const modal = document.querySelector('#signing');
+                    alert("Registered Account Successfully");
+                    $('#spinner').hide();
+                    signupform.reset();
+                    window.location.replace("student.html");
+                    
+                }).
+                    catch(function (error) {
+                        $('#spinner').hide();
+                        window.alert(error);
+
+
+                    });
+
+            });
+
+
+        });
+    </script>
+
+
+</body>
+
+</html>

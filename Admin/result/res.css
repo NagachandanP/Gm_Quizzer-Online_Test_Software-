@@ -1,0 +1,51 @@
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 90%; 
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 20px;
+    table-layout: auto;
+  }
+  
+td{
+    border: 0.5px solid black;
+    text-align: left;
+    padding: 8px;
+    
+  }
+
+  
+th {
+    border: 1px solid black;
+    text-align: left;
+    padding: 8px;
+    background-color: #91ccc9;
+  }
+tr:nth-child(even) {
+    background-color: #d2d4d8;
+  }
+
+  tr:nth-child(odd) {
+    background-color: white;
+  }
+
+ 
+
+
+  #download{
+   margin-left: 2%;
+   float: left;
+   margin-top:  40px;
+  
+   
+  }
+
+  #btnExport{
+    margin-left: 2%;
+    float: left;
+    margin-top:  40px;
+   
+    
+   }

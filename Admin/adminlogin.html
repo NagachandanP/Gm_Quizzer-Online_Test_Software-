@@ -1,0 +1,167 @@
+<!-- <html>
+    <head>
+        <title> Login And Registration Form</title>
+        <link rel="stylesheet" href="css.styles.css">
+    </head>
+    <body>
+        <div class="hero">
+            <div class="form-box"></div>
+        </div>
+    </body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gm-Quizzer</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        .hero {
+            background-image: url("new5.jpg");
+        }
+
+        .button-box {
+            width: 100px;
+        }
+    </style>
+    <style>
+        #spinner {
+            position: fixed;
+            top: 40%;
+            left: 45%;
+            z-index: 5;
+
+        }
+    </style>
+</head>
+
+<body style="background-image: url(new5.jpg);">
+    <div class="hero" id="signing">
+        <div class="form-box">
+            <div class="button-box">
+                <div id="btn"></div>
+                <button type="button" class="toggle-btn">Login</button>
+
+            </div>
+
+            <form id="Login" class="input-group">
+                <input type="email" class="input-field" id="login-email" placeholder="Email Id" required>
+                <input type="password" class="input-field" id="login-password" placeholder="Enter Password" required>
+                <span style="display: flex;"> <input type="checkbox" onclick="myFunction()"> Show Password </span>
+                <button type="submit" class="submit-btn">Login</button>
+                <div id="spinner" style="display:none;">
+                    <img id="img-spinner" src="../settings.gif" alt="Loading" />
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-firestore.js"></script>
+    <script>
+        var firebaseConfig = {
+           "Your App config here"
+
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+
+
+
+    </script>
+
+
+
+
+    <script>
+
+        const loginform = document.querySelector('#Login');
+        loginform.addEventListener('submit', (e) => {
+            $('#spinner').show();
+            e.preventDefault();
+
+            const lemail = loginform['login-email'].value;
+            const lpassword = loginform['login-password'].value;
+            var uid = null;
+            var flag=0;
+            //auth.signInWithEmailAndPassword(lemail, lpassword).then(cred => {
+            firebase.auth().signInWithEmailAndPassword(lemail, lpassword).then(cred => {
+                firebase.auth().onAuthStateChanged(function (user) {
+
+                    // document.getElementById('username').innerHTML = snapshot.doc.data().Username;
+                    db.collection('Admin').get().then(snapshot => {
+
+                        snapshot.docs.forEach(doc => {
+                            if (doc.data().Email == user.email) {
+                                flag=1;
+                                $('#spinner').hide();
+                                loginform.reset();
+                                //  alert("Welcom Admin");
+                                window.location.replace("panel.html");
+                            }
+
+                        });
+                    }).then(function () {
+                         if(flag==0){
+                        firebase.auth().signOut().then(function () {
+                            $('#spinner').hide();
+                            alert("You are not an Admin");
+                        
+                        });
+                    }
+                    });
+                });
+                //console.log(cred.user);
+                // $('#spinner').hide();
+                // alert("Welcom Admin");
+                // loginform.reset();
+                //firebase.auth().onAuthStateChanged(user => {
+                //  if (user) {
+
+                ///uid = user.uid;
+                //   window.location = 'admin.html'; //After successful login, user will be redirected to home.html
+                // window.location.replace("admin.html");
+
+                //}
+
+                // });
+
+            }).catch(function (error) {
+                $('#spinner').hide();
+                console.log("Login Failed!", error);
+                window.alert(error);
+                loginform.reset();
+            })
+
+
+        })
+
+    </script>
+
+    <script>
+        function myFunction() {
+            var k = document.getElementById("login-password");
+            if (k.type === "password") {
+                k.type = "text";
+            } else {
+                k.type = "password";
+
+            }
+        }
+    </script>
+
+</body>
+
+</html>

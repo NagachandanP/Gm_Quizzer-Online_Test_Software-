@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+      <!-- ------------------------------jquery--------------------------------------- -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+      <!-- ----------------------bootstrap-----------------------
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+        integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+     <!-- -----------------------------------------icon -------------------------------------------->
+  <link rel="icon" href="logo.png" type="image/jpg" radius>
+
+    <title>Gm-Quizzer</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        #spinner {
+            position: fixed;
+            top: 40%;
+            left: 45%;
+            z-index: 5;
+            
+        }
+        #spinner1 {
+            position: fixed;
+            top: 40%;
+            left: 45%;
+            z-index: 5;
+            
+        }
+       
+    </style>
+
+</head>
+
+<body>
+  
+    <div class="hero" id="signing">
+        <div id="authbutton">
+            <button type="submit" class="submit-btn2" id="loginE" onclick="showEmail()">Login with Email</button>
+            <!-- <h3 style="margin-top: 25px; margin-left: 100px;">OR</h3> -->
+            <h3 style="margin-top: 15px; margin-bottom: 15px; margin-left: 55px;">OR</h3>
+            <button type="submit" class="submit-btn2" onclick="showPhone()">Login with Phone</button>
+        </div>
+        <div class="form-box">
+            
+            <div class="button-box">
+                <div id="btn"></div>
+                <button type="button" class="toggle-btn" onclick="ToggleLogin()">Login</button>
+                <button type="button" class="toggle-btn" onclick="Register()">Register</button>
+            </div>
+            <!-- <div class="social-icons">
+                <img src="WhatsApp Image 2021-04-24 at 6.21.05 PM.jpeg">
+                <img src="WhatsApp Image 2021-04-24 at 6.22.07 PM.jpeg">
+            </div> -->
+            <form id="Login" class="input-group">
+
+                <input type="email" class="input-field" id="login-email" placeholder="Email Id" required>
+                <br> <br>
+                <input type="password" class="input-field" id="login-password" placeholder="Enter Password" required>
+                <!-- An element to toggle between password visibility -->
+                <span style="display: flex; cursor: pointer;" onclick="myFunction()"> <input type="checkbox" style="cursor: pointer;"> Show Password </span>
+                <!-- <input type="checkbox" class="check-box"><span>Remember Password</span> -->
+                <button type="submit" class="submit-btn">Login</button>
+                <div id="spinner" style="display:none;">
+                    <img id="img-spinner" src="Settings.gif" alt="Loading"/> 
+                 </div>
+            </form>
+            <form id="Register" class="signup-group">
+
+                <input type="text" class="input-field" id="signup-username" placeholder="Username" required>
+                <input type="tel" class="input-field" id="signup-phone" placeholder="Phone number" pattern="[0-9]{10}" required>
+                <input type="email" class="input-field" id="signup-email" placeholder="Email Id" required>
+                <input type="text" class="input-field" id="signup-college" placeholder="College name" required>
+                <input type="password" class="input-field" id="signup-password" placeholder="Enter Password" required>
+                <input type="password" class="input-field" id="confirm-password" placeholder="Confirm Password" required>
+                <!-- An element to toggle between password visibility -->
+                <span style="display: flex; cursor: pointer;" onclick="myFunction2()"> <input type="checkbox"  style="cursor: pointer;">Show Password </span>
+                <!-- <input type="checkbox" class="check-box"><span>I agree to the terms and conditions</span> -->
+
+                <button type="submit" class="submit-btn" onclick="Login()">Register</button>
+                <div id="spinner" style="display:none;">
+                    <img id="img-spinner" src="Settings.gif"  alt="Loading" /> 
+                 </div>
+            </form>
+
+
+        </div>
+        <div id="logreg-forms">
+            <form class="form-signin" id="Phone-Register" accept="#" onsubmit="returnsubfunc(event)">
+                <h3 class="submit-btn1" style="cursor: default;" >Sign in</h3>
+                <br>
+                <br><br><br>
+                
+                <label for="inputPhone" style="margin-left: 20px;"><b>Phone:</b></label><br><br>
+                <input type="text" id="inputPhone" class="form-control" style="border: black;" pattern="[+][9][1][0-9]{10}" value="+91" placeholder="+91**********" required="" autofocus="">
+                <br>
+                <div id="recaptcha-container"></div>
+                <br>
+                
+                <button class="btn " type="button" id="phoneloginbtn" style="cursor: pointer;"><i
+                        class="fas fa-sign-in-alt"></i> Send OTP</button>
+                        <br>
+                        <br>
+                <input type="otp" id="inputOtp" class="form-control" placeholder="OTP" required>
+                <br>
+                <br>
+                <button class="btn " type="submit" id="verifyotp"style="cursor: pointer;"> Register</button>
+                <div id="spinner1" style="display: none;">
+                    <img id="img-spinner" src="Settings1.gif"  alt="Loading" /> 
+                 </div>
+    
+    
+              
+    
+            </form>
+    
+    
+            <!-- <button id="checku" onclick="checkuser()">User</button><br>
+            <button id="logout1" onclick="logouto()">Logout</button> -->
+    
+            <br>
+    
+        </div>
+    </div>
+    <script>
+        $(".form-box").hide();
+        $("#logreg-forms").hide();
+        var x = document.getElementById("Login");
+        var y = document.getElementById("Register");
+        var z = document.getElementById("btn");
+
+        function Register() {
+            x.style.left = "-400px";
+            y.style.left = "50px";
+            z.style.left = "110px";
+           
+        }
+
+        function returnsubfunc(e){
+            e.preventDefault();
+        }
+       
+
+        function ToggleLogin() {
+
+
+            x.style.left = "50px";
+            y.style.left = "450px";
+            z.style.left = "0px";
+
+
+
+        }
+
+
+        function myFunction() {
+            var k = document.getElementById("login-password");
+            if (k.type === "password") {
+                k.type = "text";
+            } else {
+                k.type = "password";
+
+            }
+        }
+
+        function myFunction2() {
+            var l = document.getElementById("signup-password");
+            var c = document.getElementById("confirm-password");
+            if (l.type === "password") {
+                l.type = "text";
+            } else {
+                l.type = "password";
+
+            }
+            if (c.type === "password") {
+                c.type = "text";
+            } 
+            else {
+                c.type = "password";
+
+            }
+        }
+
+        function showEmail(){
+
+            $(".form-box").show();
+            $("#authbutton").hide();
+
+
+        }
+
+        function showPhone() {
+
+            $("#logreg-forms").show();
+            $("#authbutton").hide();
+
+        }
+
+      
+    </script>
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-firestore.js"></script>
+    <script>
+        var firebaseConfig = {
+          "Your App config here"
+
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+
+
+
+    </script>
+
+
+
+
+    <script src="auth.js"></script>
+    <script src="log.js"></script>
+
+
+</body>
+
+</html>

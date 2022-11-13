@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <!-- ------------------------------jquery--------------------------------------- -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <!--Get your code at fontawesome.com-->
+
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-storage.js"></script>
+
+    <!-- -----------------------------------------icon -------------------------------------------->
+    <link rel="icon" href="../logo.png" type="image/jpg" radius>
+
+
+    <link rel="stylesheet" href="styles.css">
+    <title>GM-Admin</title>
+
+
+    <style>
+        #spinner {
+            position: fixed;
+            top: 40%;
+            left: 45%;
+            z-index: 5;
+
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ----------------------------------------------------Nav bar--------------------------------------------------------------------------------- -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"> <i class="fas fa-graduation-cap" style="font-size: 30px;"></i></a>
+            <div style="display: flex; flex-direction:column; color: black; margin-right: 20px;"><strong
+                    style="font-size: 20px;">Gm-Quizzer </strong> <span style="font-size: 10px;">K-CET Mock Test</span>
+            </div>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a id="phy" class="nav-link active" aria-current="page" href="#" onclick=phyq()>Physics</a>
+                    <a id="chem" class="nav-link" href="#" onclick=chemq()>Chemistry</a>
+                    <a id="mat" class="nav-link" href="#" onclick=mathq()>Mathematics</a>
+                    <button id="usbtn" style="position:absolute; top:10px; right: 30px; " class="btn btn-danger "
+                        onclick="Logout()">Logout</button>
+                        <!-- <button  style="margin: auto; width: auto; margin-left: 87px; " class="btn btn-danger "
+                        onclick="checkuser()">User</button> -->
+
+
+                    <!--<button id="usbtn" type="button" class="btn btn-secondary " onclick="checkuser()">user</button>-->
+
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!------------------------------------------------------------------------------ side navbar finished ----------------------------------------------->
+  <div id ="testTime" style="width: 200px; position: absolute; right: 50px;">
+
+
+      <h2 style="color: white;margin-left: 10px;">Schedule test time here</h2>
+        <label for="test_name" style="color: white;">Test name</label>
+      <input id="test_name" type="text" placeholder="Test name">
+    <input  id="strt_time"type="datetime-local"><b style="color: white; margin-left: 80px; padding: 2px;"> TO  </b>
+    <input  id="end_time"type="datetime-local">
+     
+     <div id="time">
+         <span id="count"></span>
+     </div>
+     
+    <!-- <input  id="end_time"type="datetime-local"> -->
+    <button id="setdate"style="margin-left: 30px;" >Set time for test </button>
+</div>
+
+    <div id="phylec">
+        <h1 style="background: #fff; color: #000; margin-left: 30%; margin-right: 30%; border-radius: 10px;"> Physics
+            Questions </h1>
+        <div class="content">
+            <form id="add-que">
+                <input id="ques" type="text" name="question" placeholder="Question" required>
+
+                <!-- <input id="namebox" type="text"  placeholder="ImageName" >--> <br><br>
+                <img id="myimg"> <label id="UpProgress"></label> <br><br>
+
+
+                <button type="button" id="select" class="allbtn">Select Image</button>
+                <button type="button" id="upload" class="allbtn">Upload </button>
+
+                <input type="text" name="ImageRef" id="myField" value="" placeholder="ImageRef.">
+                <hr style="height: 3px;   ">
+
+
+
+                <input type="text" id="op1" name="option1" placeholder="Option 1">
+                <input type="text" id="opref1" name="optionRef1" placeholder="optionRef1">
+                <input type="file" id="op1img" name="option1img" onchange='choosefileop1(event)'>
+
+                <button type="button" id="uploadop1" class="allopt" onclick="uploadoption1()"> <img width="20px"
+                        height="20px" src="upload.png" alt="Upload_Image">
+                </button><label id="upop1progress"></label>
+                <hr style="height: 3px;">
+
+
+
+                <input type="text" id="op2" name="option2" placeholder="Option 2">
+                <input type="text" id="opref2" name="optionRef2" placeholder="optionRef2">
+                <input type="file" id="op2img" name="option2img" onchange='choosefileop2(event)'>
+                <button type="button" id="uploadop2" class="allopt" onclick="uploadoption2()"><img width="20px"
+                        height="20px" src="upload.png" alt="Upload_Image"></button><label id="upop2progress"></label>
+                <hr style="height: 3px;">
+
+                <input type="text" id="op3" name="option3" placeholder="Option 3">
+                <input type="text" id="opref3" name="optionRef3" placeholder="optionRef3">
+                <input type="file" id="op3img" name="option3img" onchange='choosefileop3(event)'>
+                <button type="button" id="uploadop3" class="allopt" onclick="uploadoption3()"><img width="20px"
+                        height="20px" src="upload.png" alt="Upload_Image"></button><label id="upop3progress"></label>
+                <hr style="height: 3px;">
+
+                <input type="text" id="op4" name="option4" placeholder="Option 4">
+                <input type="text" id="opref4" name="optionRef4" placeholder="optionRef4">
+
+                <input type="file" id="op4img" name="option4img" onchange='choosefileop4(event)'>
+                <button type="button" id="uploadop4" class="allopt" onclick="uploadoption4()"><img width="20px"
+                        height="20px" src="upload.png" alt="Upload_Image"></button><label id="upop4progress"></label>
+                <hr style="height: 3px;">
+                <!-- <input type="text" id="crtref" name="crtRef4" placeholder="crctReference" > -->
+
+
+                <!-- <input type="text" id="crtrefer" name="answerc" placeholder="crtanswer" > -->
+
+                <label for="crt">choose your correct answer:-</label>
+                <select name="crt" id="keyop" onchange="myfunc(event),func(e)" required>
+                    <option selected disabled> </option>
+                    <option id="oa">a</option>
+                    <option id="ob">b</option>
+                    <option id="oc">c</option>
+                    <option id="od">d</option>
+                </select>
+
+
+
+                <br><br>
+                <button type="submit" class="allbtn">Add question</button>
+
+
+            </form>
+
+            <script>
+                //grabbing options to dropdown from option input
+
+                function myfunc(e) {
+                    let oop1 = document.getElementById("op1").value;
+                    let oop2 = document.getElementById("op2").value;
+                    let oop3 = document.getElementById("op3").value;
+                    let oop4 = document.getElementById("op4").value;
+                    if ((oop1 != '' || opref1 != '')) {
+                        if (oop1 != '') {
+
+                            document.getElementById("oa").value = document.getElementById("op1").value;
+                        }
+                        else {
+                            document.getElementById("oa").value = document.getElementById("opref1").value;
+                        }
+                    }
+                    if ((oop2 != '' || opref2 != '')) {
+                        if (oop2 != '') {
+
+                            document.getElementById("ob").value = document.getElementById("op2").value;
+                        }
+                        else {
+                            document.getElementById("ob").value = document.getElementById("opref2").value;
+                        }
+                    }
+
+                    if ((oop3 != '' || opref3 != '')) {
+                        if (oop3 != '') {
+
+                            document.getElementById("oc").value = document.getElementById("op3").value;
+                        }
+                        else {
+                            document.getElementById("oc").value = document.getElementById("opref3").value;
+                        }
+                    }
+
+                    if ((oop4 != '' || opref4 != '')) {
+                        if (oop4 != '') {
+
+                            document.getElementById("od").value = document.getElementById("op4").value;
+                        }
+                        else {
+                            document.getElementById("od").value = document.getElementById("opref4").value;
+                        }
+                    }
+
+                    //    document.getElementById("crtrefer").value = document.getElementById("keyop").value;
+                }
+
+
+
+
+
+            </script>
+
+            <ul id="ques-list"> </ul>
+
+
+        </div>
+    </div>
+
+    <!--///////////////////////////////////////chemistry//////////////////////////////////////////-->
+    <div id="chelec">
+        <h1 style="background: #fff; color: #000; margin-left: 30%; margin-right: 30%; border-radius: 10px;"> Chemistry
+            Questions </h1>
+        <div class="content">
+            <form id="cadd-que">
+                <input id="ques" type="text" name="cquestion" placeholder="Question" required>
+
+                <!-- <input id="namebox" type="text"  placeholder="ImageName" >--> <br><br>
+                <img id="cmyimg"> <label id="cUpProgress"></label> <br><br>
+
+
+                <button type="button" id="cselect" class="allbtn">Select Image</button>
+                <button type="button" id="cupload" class="allbtn">Upload </button>
+
+                <input type="text" name="cImageRef" id="cmyField" value="" placeholder="ImageRef.">
+                <hr style="height: 3px;   ">
+
+
+                <input type="text" id="cop1" name="coption1" placeholder="Option 1">
+                <input type="text" id="copref1" name="coptionRef1" placeholder="optionRef1">
+                <input type="file" id="cop1img" name="coption1img" onchange='cchoosefileop1(event)'>
+
+                <button type="button" id="cuploadop1" class="allopt" onclick="cuploadoption1()"><img width="20px"
+                        height="20px" src="upload.png" alt="Upload_Image"></button><label id="cupop1progress"></label>
+                <hr style="height: 3px;">
+
+
+
+                <input type="text" id="cop2" name="coption2" placeholder="Option 2">
+                <input type="text" id="copref2" name="coptionRef2" placeholder="optionRef2">
+                <input type="file" id="cop2img" name="coption2img" onchange='cchoosefileop2(event)'>
+                <button type="button" id="cuploadop2" class="allopt" onclick="cuploadoption2()"><img width="20px"
+                        height="20px" src="upload.png" alt="Upload_Image"></button>
+                <label id="cupop2progress"></label>
+                <hr style="height: 3px;">
+
+                <input type="text" id="cop3" name="coption3" placeholder="Option 3">
+                <input type="text" id="copref3" name="coptionRef3" placeholder="optionRef3">
+                <input type="file" id="cop3img" name="coption3img" onchange='cchoosefileop3(event)'>
+                <button type="button" id="cuploadop3" class="allopt" onclick="cuploadoption3()"><img width="20px"
+                        height="20px" src="upload.png" alt="Upload_Image"></button>
+                <label id="cupop3progress"></label>
+                <hr style="height: 3px;">
+
+                <input type="text" id="cop4" name="coption4" placeholder="Option 4">
+                <input type="text" id="copref4" name="coptionRef4" placeholder="optionRef4">
+                <input type="file" id="cop4img" name="coption4img" onchange='cchoosefileop4(event)'>
+                <button type="button" id="cuploadop4" class="allopt" onclick="cuploadoption4()"><img width="20px"
+                        height="20px" src="upload.png" alt="Upload_Image"></button>
+                <label id="cupop4progress"></label>
+                <hr style="height: 3px;">
+
+
+                <label for="ccrt">choose your correct answer:-</label>
+                <select name="ccrt" id="ckeyop" onchange="myfunchem(event)" required>
+                    <option selected disabled> </option>
+                    <option id="coa">a</option>
+                    <option id="cob">b</option>
+                    <option id="coc">c</option>
+                    <option id="cod">d</option>
+                </select>
+
+                <br><br>
+                <button type="submit" class="allbtn">Add question</button>
+
+
+            </form>
+
+            <script>
+                //grabbing options to dropdown from option input
+
+                function myfunchem(e) {
+                    let coop1 = document.getElementById("cop1").value;
+                    let coop2 = document.getElementById("cop2").value;
+                    let coop3 = document.getElementById("cop3").value;
+                    let coop4 = document.getElementById("cop4").value;
+                    if ((coop1 != '' || copref1 != '')) {
+                        if (coop1 != '') {
+
+                            document.getElementById("coa").value = document.getElementById("cop1").value;
+                        }
+                        else {
+                            document.getElementById("coa").value = document.getElementById("copref1").value;
+                        }
+                    }
+                    if ((coop2 != '' || copref2 != '')) {
+                        if (coop2 != '') {
+
+                            document.getElementById("cob").value = document.getElementById("cop2").value;
+                        }
+                        else {
+                            document.getElementById("cob").value = document.getElementById("copref2").value;
+                        }
+                    }
+
+                    if ((coop3 != '' || copref3 != '')) {
+                        if (coop3 != '') {
+
+                            document.getElementById("coc").value = document.getElementById("cop3").value;
+                        }
+                        else {
+                            document.getElementById("coc").value = document.getElementById("copref3").value;
+                        }
+                    }
+
+                    if ((coop4 != '' || copref4 != '')) {
+                        if (coop4 != '') {
+
+                            document.getElementById("cod").value = document.getElementById("cop4").value;
+                        }
+                        else {
+                            document.getElementById("cod").value = document.getElementById("copref4").value;
+                        }
+                    }
+                }
+
+            </script>
+
+            <ul id="cques-list"> </ul>
+
+
+        </div>
+    </div>
+
+    <!-- ///////////////////////////////////////////////////////////////////maths///////////////////////////////////////////////////// -->
+    <div id="matlec">
+        <h1 style="background: #fff; color: #000; margin-left: 30%; margin-right: 30%; border-radius: 10px;">
+            Mathematics Questions </h1>
+        <div class="content">
+            <form id="madd-que">
+                <input id="ques" type="text" name="mquestion" placeholder="Question" required>
+
+                <!-- <input id="namebox" type="text"  placeholder="ImageName" >--> <br><br>
+                <img id="mmyimg"> <label id="mUpProgress"></label> <br><br>
+
+
+                <button type="button" id="mselect" class="allbtn">Select Image</button>
+                <button type="button" id="mupload" class="allbtn">Upload </button>
+
+                <input type="text" name="mImageRef" id="mmyField" value="" placeholder="ImageRef.">
+                <hr style="height: 3px;   ">
+
+
+                <input type="text" id="mop1" name="moption1" placeholder="Option 1">
+                <input type="text" id="mopref1" name="moptionRef1" placeholder="optionRef1">
+                <input type="file" id="mop1img" name="moption1img" onchange='mchoosefileop1(event)'>
+
+                <button type="button" id="muploadop1" class="allopt" onclick="muploadoption1()"><img width="20px"
+                        height="20px" src="upload.png" alt="Upload_Image"></button>
+                <label id="mupop1progress"></label>
+                <hr style="height: 3px;">
+
+
+
+                <input type="text" id="mop2" name="moption2" placeholder="Option 2">
+                <input type="text" id="mopref2" name="moptionRef2" placeholder="optionRef2">
+                <input type="file" id="mop2img" name="moption2img" onchange='mchoosefileop2(event)'>
+                <button type="button" id="muploadop2" class="allopt" onclick="muploadoption2()"><img width="20px"
+                        height="20px" src="upload.png" alt="Upload_Image"></button>
+                <label id="mupop2progress"></label>
+                <hr style="height: 3px;">
+
+                <input type="text" id="mop3" name="moption3" placeholder="Option 3">
+                <input type="text" id="mopref3" name="moptionRef3" placeholder="optionRef3">
+                <input type="file" id="mop3img" name="moption3img" onchange='mchoosefileop3(event)'>
+                <button type="button" id="muploadop3" class="allopt" onclick="muploadoption3()"><img width="20px"
+                        height="20px" src="upload.png" alt="Upload_Image"></button>
+                        <label id="mupop3progress"></label>
+                <hr style="height: 3px;">
+
+                <input type="text" id="mop4" name="moption4" placeholder="Option 4">
+                <input type="text" id="mopref4" name="moptionRef4" placeholder="optionRef4">
+                <input type="file" id="mop4img" name="moption4img" onchange='mchoosefileop4(event)'>
+                <button type="button" id="muploadop4" class="allopt" onclick="muploadoption4()"><img width="20px"
+                        height="20px" src="upload.png" alt="Upload_Image"></button>
+                        <label id="mupop4progress"></label>
+                <hr style="height: 3px;">
+
+
+                <label for="mcrt">choose your correct answer:-</label>
+                <select name="mcrt" id="mkeyop" onchange="myfuncmat(event)" required>
+                    <option selected disabled> </option>
+                    <option id="moa">a</option>
+                    <option id="mob">b</option>
+                    <option id="moc">c</option>
+                    <option id="mod">d</option>
+                </select>
+
+                <br><br>
+                <button class="allbtn">Add question</button>
+
+
+            </form>
+
+            <script>
+                //grabbing options to dropdown from option input
+
+                function myfuncmat(e) {
+                    let moop1 = document.getElementById("mop1").value;
+                    let moop2 = document.getElementById("mop2").value;
+                    let moop3 = document.getElementById("mop3").value;
+                    let moop4 = document.getElementById("mop4").value;
+                    if ((moop1 != '' || mopref1 != '')) {
+                        if (moop1 != '') {
+
+                            document.getElementById("moa").value = document.getElementById("mop1").value;
+                        }
+                        else {
+                            document.getElementById("moa").value = document.getElementById("mopref1").value;
+                        }
+                    }
+                    if ((moop2 != '' || mopref2 != '')) {
+                        if (moop2 != '') {
+
+                            document.getElementById("mob").value = document.getElementById("mop2").value;
+                        }
+                        else {
+                            document.getElementById("mob").value = document.getElementById("mopref2").value;
+                        }
+                    }
+
+                    if ((moop3 != '' || mopref3 != '')) {
+                        if (moop3 != '') {
+
+                            document.getElementById("moc").value = document.getElementById("mop3").value;
+                        }
+                        else {
+                            document.getElementById("moc").value = document.getElementById("mopref3").value;
+                        }
+                    }
+
+                    if ((moop4 != '' || mopref4 != '')) {
+                        if (moop4 != '') {
+
+                            document.getElementById("mod").value = document.getElementById("mop4").value;
+                        }
+                        else {
+                            document.getElementById("mod").value = document.getElementById("mopref4").value;
+                        }
+                    }
+                }
+
+            </script>
+
+            <ul id="mques-list"> </ul>
+
+
+        </div>
+    </div>
+
+
+    <!--///////////////////////////////////////-->
+
+
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script>
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        var firebaseConfig = {
+           "Your App config here"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        const db = firebase.firestore();
+        const store = firebase.storage();
+        db.settings({ timestampsInSnapshots: true });
+
+    </script>
+    <script>
+        var ImgName, ImgUrl;
+        var files = [];
+        var reader;
+
+        document.getElementById("select").onclick = function (e) {
+
+            var input = document.createElement('input');
+            input.type = 'File';
+
+
+            input.onchange = e => {
+                files = e.target.files;
+                reader = new FileReader();
+                reader.onload = function () {
+                    document.getElementById("myimg").src = reader.result;
+                    $("#upload").show();
+
+
+                }
+                reader.readAsDataURL(files[0]);
+            }
+            input.click();
+
+
+        }
+        //---------------------------------------------------Uploading--------------------------------------------------------------------------
+
+        document.getElementById('upload').onclick = function () {
+            // alert(files[0].name);
+            //  ImgName = document.getElementById('namebox').value;
+            uploadTask = firebase.storage().ref('Physics/' + files[0].name + ".png").put(files[0]);
+
+            uploadTask.on('state_changed', function (snapshot) {
+                var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                document.getElementById('UpProgress').innerHTML = 'Upload' + progress + '%';
+            },
+                function (error) {
+                    alert('error in saving the image');
+                },
+
+                function () {
+                    uploadTask.snapshot.ref.getDownloadURL().then(function (url) {
+
+                        ImgUrl = url;
+                        console.log(ImgUrl);
+                        document.getElementById('myField').value = ImgUrl;
+                        firebase.database().ref('Physics/' + files[0].name).set({
+                            Name: files[0].name,
+                            Link: ImgUrl
+                        });
+                        alert('image added successfully');
+
+                    }
+                    );
+                });
+
+        }
+
+
+        //-----------------------------Retrieval------------------------
+
+
+    </script>
+
+
+    <!--  ////////////////////////////////chemistry/////////////////////////////// -->
+
+    <script>
+        var cImgName, cImgUrl;
+        var cfiles = [];
+        var reader;
+
+        document.getElementById("cselect").onclick = function (e) {
+
+            var input = document.createElement('input');
+            input.type = 'File';
+
+
+            input.onchange = e => {
+                cfiles = e.target.files;
+                reader = new FileReader();
+                reader.onload = function () {
+                    document.getElementById("cmyimg").src = reader.result;
+                    $("#cupload").show();
+                }
+                reader.readAsDataURL(cfiles[0]);
+            }
+            input.click();
+        }
+        //---------------------------------------------------Uploading--------------------------------------------------------------------------
+
+        document.getElementById('cupload').onclick = function () {
+            // alert(cfiles[0].name);
+            //  ImgName = document.getElementById('namebox').value;
+            uploadTask = firebase.storage().ref('chemistry/' + cfiles[0].name + ".png").put(cfiles[0]);
+
+            uploadTask.on('state_changed', function (snapshot) {
+                var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                document.getElementById('cUpProgress').innerHTML = 'Upload' + progress + '%';
+            },
+                function (error) {
+                    alert('error in saving the image');
+                },
+
+                function () {
+                    uploadTask.snapshot.ref.getDownloadURL().then(function (url) {
+
+                        cImgUrl = url;
+                        console.log(cImgUrl);
+                        document.getElementById('cmyField').value = cImgUrl;
+                        firebase.database().ref('chemistry/' + cfiles[0].name).set({
+                            Name: cfiles[0].name,
+                            Link: cImgUrl
+                        });
+                        alert('image added successfully');
+
+                    }
+                    );
+                });
+
+        }
+
+
+    //-----------------------------Retrieval------------------------
+
+
+    </script>
+
+
+
+    <!-- ///////////////////////////////////maths/////////////////////////// -->
+
+    <script>
+        var mImgName, mImgUrl;
+        var files = [];
+        var reader;
+
+        document.getElementById("mselect").onclick = function (e) {
+
+            var input = document.createElement('input');
+            input.type = 'File';
+
+
+            input.onchange = e => {
+                mfiles = e.target.files;
+                reader = new FileReader();
+                reader.onload = function () {
+                    document.getElementById("mmyimg").src = reader.result;
+                    $("#mupload").show();
+                }
+                reader.readAsDataURL(mfiles[0]);
+            }
+            input.click();
+        }
+        //---------------------------------------------------Uploading--------------------------------------------------------------------------
+
+        document.getElementById('mupload').onclick = function () {
+            // alert(mfiles[0].name);
+            //  ImgName = document.getElementById('namebox').value;
+            uploadTask = firebase.storage().ref('maths/' + mfiles[0].name + ".png").put(mfiles[0]);
+
+            uploadTask.on('state_changed', function (snapshot) {
+                var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                document.getElementById('mUpProgress').innerHTML = 'Upload' + progress + '%';
+            },
+                function (error) {
+                    alert('error in saving the image');
+                },
+
+                function () {
+                    uploadTask.snapshot.ref.getDownloadURL().then(function (url) {
+
+                        mImgUrl = url;
+                        console.log(mImgUrl);
+                        document.getElementById('mmyField').value = mImgUrl;
+                        firebase.database().ref('maths/' + mfiles[0].name).set({
+                            Name: mfiles[0].name,
+                            Link: mImgUrl
+                        });
+                        alert('image added successfully');
+
+                    }
+                    );
+                });
+
+        }
+
+
+    //-----------------------------Retrieval------------------------
+
+
+
+    </script>
+<!-- `<script>
+    function checkuser(){
+  firebase.auth().onAuthStateChanged(function (user) {
+      alert("email: "+user.email+" uid: "+user.uid );
+
+      
+  });
+}
+
+</script> -->
+<script src="app.js"></script>
+    <script src="options.js"></script>
+</body>
+
+</html>
